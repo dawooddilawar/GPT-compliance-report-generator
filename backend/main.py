@@ -111,7 +111,7 @@ Generate a JSON response with the following exact structure. Ensure all fields a
 Ensure all responses are professionally written and suitable for regulatory documentation. Format the response as valid JSON.
 """
 
-@app.post("/generate-report", response_model=ComplianceReport)
+@app.post("/api/generate-report", response_model=ComplianceReport)
 async def generate_compliance_report(input_data: DeviceInput):
     try:
         # Format the prompt with the input data
