@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AlertCircle, FileText, Loader2 } from 'lucide-react';
-import { Alert, AlertTitle, AlertDescription } from '@/components/UI/alert';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/Alert';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
