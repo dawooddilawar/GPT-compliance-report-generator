@@ -1,112 +1,140 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List, Dict
-import json
-import os
-from dotenv import load_dotenv
+from typing import List, Dict, Optional
 from openai import OpenAI
 
-# Load environment variables
-load_dotenv()
+client = OpenAI()
 
 app = FastAPI()
 
-# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with your actual frontend domain
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
-client = OpenAI()
-
-
-class ComplianceInput(BaseModel):
+class DeviceInput(BaseModel):
     device_name: str
-    device_category: str
-    safety_features: List[str]
+    manufacturer: str
+    model_number: str
+    classification: str
     intended_use: str
-
+    target_population: str
+    technical_description: str
+    materials: str
 
 class ComplianceReport(BaseModel):
-    device_details: Dict
-    compliance_summary: str
-    safety_assessment: str
-    recommendations: List[str]
-
+    executive_summary: Dict
+    device_description: Dict
+    regulatory_classification: Dict
+    safety_performance: Dict
+    declaration: Dict
 
 REPORT_TEMPLATE = """
-Please generate a compliance report for a medical device with the following structure:
-1. Analyze if the device meets basic safety requirements
-2. Evaluate the intended use compliance
-3. Provide specific recommendations
+You are an expert in medical device compliance. Generate a detailed EU MDR compliance report in JSON format for the following device:
 
 Device Details:
 - Name: {device_name}
-- Category: {device_category}
-- Safety Features: {safety_features}
+- Manufacturer: {manufacturer}
+- Model Number: {model_number}
+- Classification: {classification}
 - Intended Use: {intended_use}
+- Target Population: {target_population}
+- Technical Description: {technical_description}
+- Materials: {materials}
+
+Generate a JSON response with the following exact structure:
+
+{
+    "executive_summary": {
+        "device_overview": {
+            "device_name": str,
+            "model_number": str,
+            "manufacturer": str,
+            "classification": str,
+            "udi_di": str,
+            "intended_purpose": str
+        },
+        "compliance_declaration": str
+    },
+    "device_description": {
+        "technical_specifications": {
+            "physical_description": str,
+            "materials": list[str],
+            "key_components": list[str],
+            "technical_parameters": list[str]
+        },
+        "intended_use": {
+            "primary_function": str,
+            "target_population": str,
+            "medical_conditions": list[str],
+            "usage_environment": str
+        }
+    },
+    "regulatory_classification": {
+        "classification_details": {
+            "rule_applied": str,
+            "justification": str,
+            "applicable_annexes": list[str]
+        },
+        "conformity_assessment": {
+            "selected_procedure": str,
+            "notified_body": str
+        }
+    },
+    "safety_performance": {
+        "gspr_compliance": str,
+        "risk_management": {
+            "process_description": str,
+            "analysis_method": str,
+            "benefit_risk_determination": str
+        }
+    },
+    "declaration": {
+        "legal_manufacturer": str,
+        "authorized_representative": str,
+        "declaration_statement": str
+    }
+}
+
+Ensure all responses are professionally written and suitable for regulatory documentation.
 """
 
-
-def validate_report(report: Dict) -> bool:
-    """Basic validation to ensure report meets minimum requirements"""
-    required_fields = ['compliance_summary', 'safety_assessment', 'recommendations']
-    return all(field in report and len(report[field]) > 0 for field in required_fields)
-
-
-@app.get("/health")
-async def health_check():
-    """Health check endpoint"""
-    return {"status": "healthy"}
-
-
 @app.post("/generate-report", response_model=ComplianceReport)
-async def generate_compliance_report(input_data: ComplianceInput):
+async def generate_compliance_report(input_data: DeviceInput):
     try:
-        # Format the prompt with input data
         prompt = REPORT_TEMPLATE.format(
             device_name=input_data.device_name,
-            device_category=input_data.device_category,
-            safety_features=", ".join(input_data.safety_features),
-            intended_use=input_data.intended_use
+            manufacturer=input_data.manufacturer,
+            model_number=input_data.model_number,
+            classification=input_data.classification,
+            intended_use=input_data.intended_use,
+            target_population=input_data.target_population,
+            technical_description=input_data.technical_description,
+            materials=input_data.materials
         )
 
-        # Uncomment and replace with your OpenAI implementation
-        response = client.chat.completions.create(
-            messages=[{
-                "role": "system",
-                "content": prompt,
-            }],
-            model='gpt-4o',
-            response_format={"type": "json_object"}
+        response = client.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are an EU MDR compliance expert. Provide detailed, accurate compliance reports in JSON format."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7,
         )
 
-        # Mock response for demo
-        mock_report = {
-            "device_details": input_data.dict(),
-            "compliance_summary": f"Initial compliance assessment for {input_data.device_name}",
-            "safety_assessment": (
-                f"Safety features analysis for {input_data.device_category}: "
-                f"Reviewed {len(input_data.safety_features)} safety features"
-            ),
-            "recommendations": [
-                f"Verify {feature} documentation" for feature in input_data.safety_features
-            ]
-        }
-
-        # Validate the generated report
-        if not validate_report(mock_report):
+        # Parse the JSON response
+        try:
+            report_content = json.loads(response.choices[0].message.content)
+            return report_content
+        except json.JSONDecodeError:
             raise HTTPException(
-                status_code=400,
-                detail="Generated report failed validation checks"
+                status_code=500,
+                detail="Failed to parse GPT response into valid JSON"
             )
-
-        return mock_report
 
     except Exception as e:
         raise HTTPException(
@@ -114,8 +142,6 @@ async def generate_compliance_report(input_data: ComplianceInput):
             detail=f"Error generating report: {str(e)}"
         )
 
-
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
