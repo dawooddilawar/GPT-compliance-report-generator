@@ -1,9 +1,9 @@
-import ComplianceGenerator from '@components/ComplianceReportGenerator/ComplianceReportGenerator'
+import ComplianceReportGenerator from '@/components/ComplianceReportGenerator/ComplianceReportGenerator'
 
 function App() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <ComplianceGenerator />
+      <ComplianceReportGenerator />
     </div>
   )
 }
