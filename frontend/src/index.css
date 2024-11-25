@@ -33,6 +33,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   justify-content: center;
+  background-color: #F9FAFB;
 }
 
 h1 {
