@@ -162,7 +162,7 @@ const ComplianceReportGenerator = () => {
                 name="intended_use"
                 value={formData.intended_use}
                 onChange={handleChange}
-                className="w-full p-2 border rounded-md text-black bg-white max-h-11 resize-none"
+                className="w-full p-2 border rounded-md text-black bg-white min-h-[180px] max-h-[220px] overflow-y-auto scrollbar-hide resize-none"
                 rows="3"
                 required
                 placeholder="Continuous monitoring of blood glucose levels in diabetic patients through a minimally invasive subcutaneous sensor. Provides real-time glucose readings and trending data to help patients manage their diabetes."
@@ -177,7 +177,7 @@ const ComplianceReportGenerator = () => {
                 name="target_population"
                 value={formData.target_population}
                 onChange={handleChange}
-                className="w-full p-2 border rounded-md text-black bg-white max-h-11 resize-none"
+                className="w-full p-2 border rounded-md text-black bg-white min-h-[180px] max-h-[220px] overflow-y-auto scrollbar-hide resize-none"
                 rows="2"
                 required
                 placeholder="Adult patients (18+ years) with Type 1 or Type 2 diabetes requiring regular blood glucose monitoring. Not intended for use in pregnant women or patients with severe kidney disease."
@@ -192,7 +192,7 @@ const ComplianceReportGenerator = () => {
                 name="technical_description"
                 value={formData.technical_description}
                 onChange={handleChange}
-                className="w-full p-2 border rounded-md text-black bg-white max-h-11 resize-none"
+                className="w-full p-2 border rounded-md text-black bg-white min-h-[180px] max-h-[220px] overflow-y-auto scrollbar-hide resize-none"
                 rows="3"
                 required
                 placeholder="Wearable device consisting of a subcutaneous sensor and transmitter unit. Uses enzymatic glucose oxidase technology with electrochemical detection. Features Bluetooth connectivity, 7-day sensor life, waterproof design (IP67), and continuous data transmission to smartphone app."
@@ -207,7 +207,7 @@ const ComplianceReportGenerator = () => {
                 name="materials"
                 value={formData.materials}
                 onChange={handleChange}
-                className="w-full p-2 border rounded-md text-black bg-white max-h-11 resize-none"
+                className="w-full p-2 border rounded-md text-black bg-white min-h-[180px] max-h-[220px] overflow-y-auto scrollbar-hide resize-none"
                 rows="2"
                 required
                 placeholder="Medical-grade silicone housing, platinum electrode sensors, hydrogel adhesive patch, biocompatible polymer membrane, lithium-ion battery, surgical steel insertion needle (disposable)."
