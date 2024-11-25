@@ -99,7 +99,7 @@ const ComplianceReportGenerator = () => {
                 name="device_name"
                 value={formData.device_name}
                 onChange={handleChange}
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border rounded-md text-black bg-white"
                 required
                 placeholder="GlucoTrack Pro X1"
               />
@@ -114,7 +114,7 @@ const ComplianceReportGenerator = () => {
                 name="manufacturer"
                 value={formData.manufacturer}
                 onChange={handleChange}
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border rounded-md text-black bg-white"
                 required
                 placeholder="MediTech Solutions GmbH"
               />
@@ -129,7 +129,7 @@ const ComplianceReportGenerator = () => {
                 name="model_number"
                 value={formData.model_number}
                 onChange={handleChange}
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border rounded-md text-black bg-white"
                 required
                 placeholder="GTX1-2024"
               />
@@ -143,7 +143,7 @@ const ComplianceReportGenerator = () => {
                 name="classification"
                 value={formData.classification}
                 onChange={handleChange}
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border rounded-md text-black bg-white"
                 required
               >
                 <option value="">Select Classification</option>
@@ -155,7 +155,7 @@ const ComplianceReportGenerator = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1 text-black bg-white">
                 Intended Use
               </label>
               <textarea
@@ -170,14 +170,14 @@ const ComplianceReportGenerator = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1 ">
                 Target Population
               </label>
               <textarea
                 name="target_population"
                 value={formData.target_population}
                 onChange={handleChange}
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border rounded-md text-black bg-white"
                 rows="2"
                 required
                 placeholder="Adult patients (18+ years) with Type 1 or Type 2 diabetes requiring regular blood glucose monitoring. Not intended for use in pregnant women or patients with severe kidney disease."
@@ -192,7 +192,7 @@ const ComplianceReportGenerator = () => {
                 name="technical_description"
                 value={formData.technical_description}
                 onChange={handleChange}
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border rounded-md text-black bg-white"
                 rows="3"
                 required
                 placeholder="Wearable device consisting of a subcutaneous sensor and transmitter unit. Uses enzymatic glucose oxidase technology with electrochemical detection. Features Bluetooth connectivity, 7-day sensor life, waterproof design (IP67), and continuous data transmission to smartphone app."
@@ -207,7 +207,7 @@ const ComplianceReportGenerator = () => {
                 name="materials"
                 value={formData.materials}
                 onChange={handleChange}
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border rounded-md text-black bg-white"
                 rows="2"
                 required
                 placeholder="Medical-grade silicone housing, platinum electrode sensors, hydrogel adhesive patch, biocompatible polymer membrane, lithium-ion battery, surgical steel insertion needle (disposable)."
